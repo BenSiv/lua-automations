@@ -1,0 +1,37 @@
+#!/bin/lua
+
+package.path = "/home/bensiv/Auto/arch-automations/?.lua;" .. package.path
+local length = require("utils").length
+
+local function print_help()
+	print([[
+Usage: arch <argument> <program_name>
+Arguments:
+	- install
+	- remove
+    ]])
+end
+
+local function main()	
+	local command_parser = {
+		["install"] = "yay --sync --noconfirm",
+		["remove"] = "yay --remove --nosave --recursive --unneeded --noconfirm"
+	}
+	
+	if length(arg) ~= 2 then
+		print_help()
+	else
+		local command = arg[1]
+		local program_name = arg[2]
+		
+		if command_parser[command] then
+		    local to_exec = command_parser[command] .. " " .. program_name
+		    os.execute(to_exec)
+		else
+			print("'" .. command .. "' is not a valid argument\n")
+			print_help()
+		end
+	end
+end
+
+main()
