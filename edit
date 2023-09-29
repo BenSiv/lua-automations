@@ -1,0 +1,22 @@
+#!/bin/lua
+
+package.path = "/home/bensiv/Auto/arch-automations/?.lua;" .. package.path
+local length = require("utils").length
+
+local function print_help()
+	print("Usage: edit <file>")
+end
+
+local function main()	
+	
+	if length(arg) ~= 1 then
+		print_help()
+	else
+		local file_to_edit = arg[1]
+		local to_exec = "gnome-text-editor " .. file_to_edit .. " > /dev/null 2>&1 &"
+		os.execute(to_exec)
+		-- print(to_exec)
+	end
+end
+
+main()
