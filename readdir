@@ -1,0 +1,20 @@
+#!/bin/lua
+
+package.path = "/home/bensiv/Auto/arch-automations/?.lua;" .. package.path
+local length = require("utils").length
+
+local function print_help()
+	print("Usage: readdir")
+end
+
+local function main()	
+	if length(arg) == 0 then
+		local to_exec = "ls --format=single-column --almost-all --group-directories-first"
+		os.execute(to_exec)
+		-- print(to_exec)
+	else
+	    print_help()
+	end
+end
+
+main()
