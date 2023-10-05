@@ -17,7 +17,7 @@ local function main()
     local command_parser = {
         ["install"] = "yay --sync --noconfirm",
         ["remove"] = "yay --remove --nosave --recursive --unneeded --noconfirm",
-        ["update"] = "yay --sync --sysupgrade --refresh --noconfirm"
+        ["update"] = "yay --sync --sysupgrade --refresh --noconfirm && yay --sync --clean --noconfirm"
     }
 	
     if length(arg) == 0 then

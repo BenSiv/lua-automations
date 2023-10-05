@@ -1,0 +1,23 @@
+#!/bin/lua
+
+package.path = "/home/bensiv/Auto/arch-automations/?.lua;" .. package.path
+local length = require("utils").length
+
+local function print_help()
+	print("Usage: edit <what> <where>")
+end
+
+local function main()	
+	
+	if length(arg) ~= 2 then
+		print_help()
+	else
+		local what = arg[1]
+		local where = arg[2]
+		local to_exec = string.format("grep --recursive --line-number --color=always '%s' '%s'" , what, where)
+		os.execute(to_exec)
+		-- print(to_exec)
+	end
+end
+
+main()
