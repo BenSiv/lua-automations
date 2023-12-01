@@ -1,7 +1,7 @@
 #!/bin/lua
 
 package.path = "/home/bensiv/Auto/arch-automations/?.lua;" .. package.path
-local length = require("utils").length
+require("utils").using("utils")
 
 local function print_help()
 	print([[
@@ -17,8 +17,11 @@ local function main()
     local command_parser = {
         ["install"] = "yay --sync --noconfirm",
         ["remove"] = "yay --remove --nosave --recursive --unneeded --noconfirm",
-        ["update"] = "yay --sync --sysupgrade --refresh --noconfirm && yay --sync --clean --noconfirm"
+        ["update"] = "yay --sync --sysupgrade --refresh --noconfirm && yay --sync --clean --noconfirm",
+        ["list"] = "yay --query"
     }
+    
+    local no_args = {"update", "list"}
 	
     if length(arg) == 0 then
         print("missing command\n")
@@ -26,7 +29,7 @@ local function main()
     elseif length(arg) == 1 then
 	    local command = arg[1]
 	    if command_parser[command] then
-	        if command == "update" then
+	        if occursin(command, no_args) then
                 local to_exec = command_parser[command]
                 os.execute(to_exec)
             else
@@ -41,7 +44,7 @@ local function main()
         local command = arg[1]
         local program_name = arg[2]
 		
-        if command_parser[command] and command ~= "update" then
+        if command_parser[command] and not occursin(command, no_args) then
             local to_exec = command_parser[command] .. " " .. program_name
             os.execute(to_exec)
         else
