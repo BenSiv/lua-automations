@@ -28,7 +28,8 @@ local function main()
 		blue = "\27[01;34m"
 	}
 	
-	if arg[1] then 
+	local directory = arg[1] 
+	if directory then 
 		content = get_content(directory)
 	else
 		content = get_content(".")
