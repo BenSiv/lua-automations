@@ -7,7 +7,8 @@ local function get_content(directory)
 	local dirs = {}
     for file in lfs.dir(directory) do
         if file ~= "." and file ~= ".." then
-            local mode = lfs.attributes(file, "mode")
+			local path = directory .. "/" .. file
+            local mode = lfs.attributes(path, "mode")
             if mode == "file" then
             	table.insert(files, file)
             else
