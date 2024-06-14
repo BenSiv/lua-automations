@@ -7,7 +7,8 @@ local function get_content(directory)
 	local dirs = {}
     for file in lfs.dir(directory) do
         if file ~= "." and file ~= ".." then
-            local mode = lfs.attributes(file, "mode")
+            local path = directory .. "/" .. file
+            local mode = lfs.attributes(path, "mode")
             if mode == "file" then
             	table.insert(files, file)
             else
@@ -27,22 +28,22 @@ local function main()
 		default = "\27[0m",
 		blue = "\27[01;34m"
 	}
-	
+
 	local directory = arg[1] 
 	if directory then 
 		content = get_content(directory)
 	else
 		content = get_content(".")
 	end
-	
+
 	for key, dir in pairs(content["dirs"]) do
 		print(colors.blue .. dir .. colors.default)
 	end
-    
+
     for key, file in pairs(content["files"]) do
 		print(colors.default .. file .. colors.default)
 	end
-	
+
 end
 
 main()
