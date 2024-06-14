@@ -1,17 +1,19 @@
 #!/bin/lua
 
-lfs = require("lfs")
+local lfs = require("lfs")
 
 local function get_content(directory)
 	local files = {}
 	local dirs = {}
+
+	local dir, err = pcall(lfs.dir, directory)
+    if not dir then
+        return nil
+    end
+
     for file in lfs.dir(directory) do
         if file ~= "." and file ~= ".." then
-<<<<<<< HEAD
-            local path = directory .. "/" .. file
-=======
 			local path = directory .. "/" .. file
->>>>>>> a53364b61c9ae9042a087976d968bc20a187d8f7
             local mode = lfs.attributes(path, "mode")
             if mode == "file" then
             	table.insert(files, file)
@@ -28,28 +30,32 @@ end
 
 local function main()
 	-- ANSI escape codes for colors
-	local colors = {
-		default = "\27[0m",
-		blue = "\27[01;34m"
-	}
+    local colors = {
+        default = "\27[0m",
+        blue = "\27[01;34m",
+        red = "\27[01;31m"
+    }
 
-	local directory = arg[1] 
+	local content
+	local directory = arg[1]
 	if directory then 
 		content = get_content(directory)
 	else
 		content = get_content(".")
 	end
 
-	for key, dir in pairs(content["dirs"]) do
-		print(colors.blue .. dir .. colors.default)
-	end
+	if not content then
+        print(colors.red .. "Error: cannot access " .. directory .. ": No such file or directory" .. colors.default)
+    else
+		for _, dir in pairs(content["dirs"]) do
+			print(colors.blue .. dir .. colors.default)
+		end
 
-    for key, file in pairs(content["files"]) do
-		print(colors.default .. file .. colors.default)
+		for _, file in pairs(content["files"]) do
+			print(colors.default .. file .. colors.default)
+		end
 	end
-
 end
 
 main()
-
 
