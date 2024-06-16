@@ -36,25 +36,27 @@ local function main()
         red = "\27[01;31m"
     }
 
-	local content
-	local directory = arg[1]
-	if directory then 
-		content = get_content(directory)
-	else
-		content = get_content(".")
-	end
+	local path = arg[1] or "."
+    local mode = lfs.attributes(path, "mode")
 
-	if not content then
-        print(colors.red .. "Error: cannot access " .. directory .. ": No such file or directory" .. colors.default)
+    if not mode then
+        print(colors.red .. "Error: cannot access " .. path .. ": No such file or directory" .. colors.default)
+    elseif mode == "file" then
+        print(colors.default .. path .. colors.default)
     else
-		for _, dir in pairs(content["dirs"]) do
-			print(colors.blue .. dir .. colors.default)
-		end
-
-		for _, file in pairs(content["files"]) do
-			print(colors.default .. file .. colors.default)
-		end
-	end
+        local content = get_content(path)
+        if not content then
+            print(colors.red .. "Error: could not read content of " .. directory .. colors.default)
+        else
+            for _, dir in pairs(content["dirs"]) do
+                print(colors.blue .. dir .. colors.default)
+            end
+    
+            for _, file in pairs(content["files"]) do
+                print(colors.default .. file .. colors.default)
+            end
+        end
+    end
 end
 
 main()
