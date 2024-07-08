@@ -51,7 +51,7 @@ local function main()
             for _, dir in pairs(content["dirs"]) do
                 print(colors.blue .. dir .. colors.default)
             end
-    
+
             for _, file in pairs(content["files"]) do
                 print(colors.default .. file .. colors.default)
             end

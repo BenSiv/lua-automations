@@ -3,7 +3,7 @@
 local length = require("utils").length
 
 local function print_help()
-	print("Usage: open < what >")
+	print("Usage: gitup < message >")
 end
 
 local function main()
@@ -11,10 +11,11 @@ local function main()
 	if length(arg) ~= 1 then
 		print_help()
 	else
-		local what = arg[1]
-		local to_exec = string.format("xdg-open '%s' 2>/dev/null" , what)
-		os.execute(to_exec)
-		-- print(to_exec)
+		local message = arg[1]
+
+		os.execute("git add .")
+		os.execute(string.format("git commit -m '%s'", message))
+		os.execute("git push")
 	end
 end
 

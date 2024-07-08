@@ -1,14 +1,13 @@
 #!/bin/lua
 
-package.path = "/home/bensiv/Auto/arch-automations/?.lua;" .. package.path
 local length = require("utils").length
 
 local function print_help()
-	print("Usage: find <what> <where>")
+	print("Usage: find < what > < where >")
 end
 
-local function main()	
-	
+local function main()
+
 	if length(arg) ~= 2 then
 		print_help()
 	else
