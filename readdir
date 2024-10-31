@@ -1,31 +1,40 @@
 #!/bin/lua
 
+require("utils").using("utils")
 local lfs = require("lfs")
 
 local function get_content(directory)
-	local files = {}
-	local dirs = {}
+	local files = {hidden={}, visible={}}
+	local dirs = {hidden={}, visible={}}
 
 	local dir, err = pcall(lfs.dir, directory)
     if not dir then
         return nil
     end
 
-    for file in lfs.dir(directory) do
-        if file ~= "." and file ~= ".." then
-			local path = directory .. "/" .. file
+    for entry in lfs.dir(directory) do
+        if entry ~= "." and entry ~= ".." then
+			local path = directory .. "/" .. entry
             local mode = lfs.attributes(path, "mode")
             if mode == "file" then
-            	table.insert(files, file)
+            	if slice(entry, 1, 1) == "." then
+	            	table.insert(files.hidden, entry)
+            	else
+	            	table.insert(files.visible, entry)
+            	end
             else
-            	table.insert(dirs, file)
+            	if slice(entry, 1, 1) == "." then
+            		table.insert(dirs.hidden, entry)
+            	else
+            		table.insert(dirs.visible, entry)
+            	end
             end
         end
     end
-    table.sort(files)
-    table.sort(dirs)
+
     local content = {files = files, dirs = dirs}
-    return content
+    sorted_content = deep_sort(content)
+    return sorted_content
 end
 
 local function main()
@@ -48,13 +57,27 @@ local function main()
         if not content then
             print(colors.red .. "Error: could not read content of " .. directory .. colors.default)
         else
-            for _, dir in pairs(content["dirs"]) do
-                print(colors.blue .. dir .. colors.default)
-            end
 
-            for _, file in pairs(content["files"]) do
-                print(colors.default .. file .. colors.default)
-            end
+        	-- print hidden directories
+			for _, dir in pairs(content["dirs"]["hidden"]) do
+	        	print(colors.blue .. dir .. colors.default)
+	        end
+
+	        -- print visible directories
+	        for _, dir in pairs(content["dirs"]["visible"]) do
+	            print(colors.blue .. dir .. colors.default)
+	        end
+
+			-- print hidden files
+			for _, file in pairs(content["files"]["hidden"]) do
+	        	print(colors.default .. file .. colors.default)
+	        end
+
+	        -- print visible files
+	        for _, file in pairs(content["files"]["visible"]) do
+	            print(colors.default .. file .. colors.default)
+	        end
+	        
         end
     end
 end
