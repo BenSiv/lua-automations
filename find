@@ -1,22 +1,30 @@
 #!/bin/lua
 
-local length = require("utils").length
+require("utils").using("utils")
+using("argparse")
 
-local function print_help()
-	print("Usage: find < what > < where >")
-end
+local function main(arg)	
+	local arg_string = [[
+	    -s --what arg string true
+	    -l --where arg string true
+	    -u --unique flag string false
+	]]
 
-local function main()
+	local expected_args = def_args(arg_string)
+	local args = parse_args(arg, expected_args)
 
-	if length(arg) ~= 2 then
-		print_help()
-	else
-		local what = arg[1]
-		local where = arg[2]
-		local to_exec = string.format("grep --recursive --line-number --color=always '%s' '%s'" , what, where)
-		os.execute(to_exec)
-		-- print(to_exec)
+	local base_command = {"grep", "--recursive", "--line-number", "--color=always"}
+
+	if args["unique"]  then
+		table.insert(base_command, "--files-with-matches")
 	end
+
+	table.insert(base_command, args["what"])
+	table.insert(base_command, args["where"])
+
+	local to_exec = table.concat(base_command, " ")
+	-- os.execute(to_exec)
+	print(to_exec)
 end
 
-main()
+main(arg)
