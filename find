@@ -23,8 +23,8 @@ local function main(arg)
 	table.insert(base_command, args["where"])
 
 	local to_exec = table.concat(base_command, " ")
-	-- os.execute(to_exec)
-	print(to_exec)
+	os.execute(to_exec)
+	-- print(to_exec)
 end
 
 main(arg)
