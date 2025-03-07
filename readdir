@@ -17,13 +17,13 @@ local function get_content(directory)
 			local path = directory .. "/" .. entry
             local mode = lfs.attributes(path, "mode")
             if mode == "file" then
-            	if slice(entry, 1, 1) == "." then
+            	if starts_with(entry, ".") then
 	            	table.insert(files.hidden, entry)
             	else
 	            	table.insert(files.visible, entry)
             	end
             else
-            	if slice(entry, 1, 1) == "." then
+            	if starts_with(entry, ".") then
             		table.insert(dirs.hidden, entry)
             	else
             		table.insert(dirs.visible, entry)
