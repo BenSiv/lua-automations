@@ -7,8 +7,7 @@ local function print_help()
 end
 
 local function main()
-
-	if length(arg) ~= 1 then
+	if not arg[1] then
 		print_help()
 	else
 		local file_to_edit = arg[1]
