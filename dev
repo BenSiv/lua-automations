@@ -8,7 +8,7 @@ end
 
 local function main()
 
-	if length(arg) ~= 1 then
+	if length(arg) ~= 3 then
 		print_help()
 	else
 		local name = arg[1]
