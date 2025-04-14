@@ -1,4 +1,4 @@
-#!/bin/lua
+-- find a sequence within files
 
 require("utils").using("utils")
 using("argparse")

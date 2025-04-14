@@ -1,4 +1,4 @@
-#!/bin/lua
+-- connect to aws ec2 instance via ssm
 
 local length = require("utils").length
 

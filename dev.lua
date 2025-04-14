@@ -1,4 +1,4 @@
-#!/bin/lua
+-- connect to socker container
 
 local length = require("utils").length
 

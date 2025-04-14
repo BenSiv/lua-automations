@@ -1,4 +1,4 @@
-#!/bin/lua
+-- open file with default program
 
 local length = require("utils").length
 

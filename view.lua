@@ -1,5 +1,3 @@
-#!/bin/lua
-
 -- view table from delimited file
 
 require("utils").using("utils")

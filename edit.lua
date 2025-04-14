@@ -1,4 +1,4 @@
-#!/bin/lua
+-- edit file with micro editor
 
 local length = require("utils").length
 
