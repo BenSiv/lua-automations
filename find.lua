@@ -13,18 +13,19 @@ local function main(arg)
 	local expected_args = def_args(arg_string)
 	local args = parse_args(arg, expected_args)
 
-	local base_command = {"grep", "--recursive", "--line-number", "--color=always"}
-
+	local print_unique = ""
 	if args["unique"]  then
-		table.insert(base_command, "--files-with-matches")
+		print_unique =  "--files-with-matches"
 	end
 
-	table.insert(base_command, args["what"])
-	table.insert(base_command, args["where"])
+	args["where"] = args["where"] or "."
 
-	local to_exec = table.concat(base_command, " ")
-	os.execute(to_exec)
-	-- print(to_exec)
+	local to_exec = string.format("grep --recursive --line-number --color=always %s '%s' '%s'", print_unique, args["what"], args["where"])
+	local output, success = exec_command(to_exec)
+	if not success then
+		print("Failes to run command: " .. to_exec)
+	end
+	print(output)
 end
 
 main(arg)
