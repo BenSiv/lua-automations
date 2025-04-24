@@ -1,4 +1,4 @@
--- connect to socker container
+-- connect to docker container
 
 local length = require("utils").length
 
@@ -7,7 +7,6 @@ local function print_help()
 end
 
 local function main()
-
 	if length(arg) ~= 3 then
 		print_help()
 	else

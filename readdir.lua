@@ -1,6 +1,7 @@
 -- read directory content
 
 require("utils").using("utils")
+local starts_with = require("string_utils").starts_with
 using("prettyprint")
 local lfs = require("lfs")
 
