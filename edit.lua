@@ -1,7 +1,5 @@
 -- edit file with micro editor
 
-local length = require("utils").length
-
 local function print_help()
 	print("Usage: edit < file >")
 end

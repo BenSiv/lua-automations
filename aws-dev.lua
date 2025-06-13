@@ -1,15 +1,15 @@
 -- connect to aws ec2 instance via ssm
 
-local length = require("utils").length
+-- local length = require("utils").length
 
 local function print_help()
 	print("Usage: aws-dev")
 end
 
 local function main()
-	if length(arg) ~= 2 then
-		print_help()
-	else
+	-- if #arg ~= 1 then
+	-- 	print_help()
+	-- else
 		-- Run AWS session in background
 		local start_session = [[
 			nohup aws ssm start-session \
@@ -26,7 +26,7 @@ local function main()
 		-- Open SSH connection
 		local open_connection = "ssh -i /home/bensiv/.ssh/celleste-dev root@localhost -p 9022"
 		os.execute(open_connection)
-	end
+	-- end
 end
 
 main()
