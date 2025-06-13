@@ -6,8 +6,9 @@ using("paths")
 
 local function main(args)
     if not args["file"] and not args["message"] then
-        output, success = exec_command(string.format("git status"))
-        return output
+        status = exec_command(string.format("git status"))
+        print(status)
+        return nil
     end
     
 	local output, success
@@ -31,7 +32,7 @@ end
 
 arg_string = [[
     -f --file arg string false
-    -m --message arg string true
+    -m --message arg string false
 ]]
 
 expected_args = def_args(arg_string)
