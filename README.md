@@ -1,13 +1,43 @@
 # lua-automations
 
-**arch**: yay package manager wrapper
+A collection of Lua scripts for automating common development tasks.
 
-**edit**: runs gnome-text-editor without taking the terminal
+## Structure
 
-**find**: runs grep pretty
+```
+lua-automations/
+├── src/          # Source files
+├── tst/          # Test suite
+├── doc/          # Documentation
+├── LICENSE
+└── README.md
+```
 
-**readdir**: runs ls pretty, rd as an alias
+## Quick Start
 
-**open**: xdg-open alias
+```bash
+# Run a script
+lua src/repo.lua --help
 
-**gitup**: single git command for add, commit and push
+# Run tests
+./tst/run_all.sh
+```
+
+## Available Commands
+
+| Script | Description |
+|--------|-------------|
+| `repo.lua` | Git workflow automation (commit, sync, pre-commit) |
+| `find.lua` | Search for patterns in files |
+| `readdir.lua` | List directory contents |
+| `edit.lua` | Open file in editor |
+| `open.lua` | Open file with default program |
+| `view.lua` | View delimited file as table |
+| `dev.lua` | Connect to development container |
+| `arch.lua` | Arch Linux package manager wrapper |
+
+See [doc/](doc/) for detailed usage documentation.
+
+## License
+
+MIT License - see [LICENSE](LICENSE)

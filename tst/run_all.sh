@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run all tests for lua-automations
-# Usage: ./tests/run_all.sh
+# Usage: ./tst/run_all.sh
 
 set -e
 
@@ -29,8 +29,8 @@ run_test_file() {
 }
 
 # Run each test file
-for test_file in tests/test_*.lua; do
-    if [ -f "$test_file" ] && [ "$test_file" != "tests/test_framework.lua" ]; then
+for test_file in tst/test_*.lua; do
+    if [ -f "$test_file" ] && [ "$test_file" != "tst/test_framework.lua" ]; then
         run_test_file "$test_file"
     fi
 done
