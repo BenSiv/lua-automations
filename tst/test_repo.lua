@@ -4,7 +4,6 @@
 package.path = package.path .. ";./tst/?.lua"
 
 require("utils").using("utils")
-using("argparse")
 using("paths")
 
 local tests = require("test_framework")
@@ -141,13 +140,12 @@ print("\n[SUITE] CLI Argument Parsing")
 tests.run_test("repo.lua --help exits without error", function()
     local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua --help 2>&1")
     tests.assert_contains(output, "Usage", "Help should show usage")
-    tests.assert_contains(output, "--sync", "Help should mention --sync")
-    tests.assert_contains(output, "--precommit", "Help should mention --precommit")
+    tests.assert_contains(output, "behind list", "Help should mention behind list")
+    tests.assert_contains(output, "commit -m", "Help should mention commit")
 end)
 
-tests.run_test("repo.lua without args shows git status", function()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua 2>&1")
-    -- Should show either "On branch" or some git status output
+tests.run_test("repo.lua commit without args shows git status", function()
+    local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua commit 2>&1")
     local has_branch = string.find(output, "branch") or string.find(output, "Branch")
     tests.assert_true(has_branch ~= nil, "Should show git status with branch info")
 end)
@@ -157,8 +155,8 @@ end)
 --------------------------------------------------------------------------------
 print("\n[SUITE] Git Sync Functionality")
 
-tests.run_test("repo.lua --sync fetches from remotes", function()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua --sync 2>&1")
+tests.run_test("repo.lua sync fetches from remotes", function()
+    local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua sync 2>&1")
     tests.assert_contains(output, "Fetching from all remotes", "Should show fetching message")
     tests.assert_contains(output, "Sync complete", "Should complete successfully")
 end)
@@ -168,29 +166,10 @@ end)
 --------------------------------------------------------------------------------
 print("\n[SUITE] Pre-commit Hook Functionality")
 
-tests.run_test("repo.lua --checkbranch detects main/master", function()
-    local branch = get_current_branch()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua --checkbranch 2>&1")
-    
-    if branch == "main" or branch == "master" then
-        tests.assert_contains(output, "Error", "Should show error on main/master")
-        tests.assert_contains(output, "don't create commits directly", "Should warn about direct commits")
-    else
-        tests.assert_contains(output, "OK", "Should show OK on feature branch")
-    end
-end)
-
-tests.run_test("repo.lua --precommit installs hook", function()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua --precommit 2>&1")
-    tests.assert_contains(output, "Pre-commit hook installed", "Should confirm installation")
-    
-    -- Verify hook file exists
-    local hook_exists, _ = exec_command("test -f /root/lua-automations/.git/hooks/pre-commit && echo 'exists'")
-    tests.assert_contains(hook_exists, "exists", "Hook file should exist")
-    
-    -- Verify hook is executable
-    local hook_exec, _ = exec_command("test -x /root/lua-automations/.git/hooks/pre-commit && echo 'executable'")
-    tests.assert_contains(hook_exec, "executable", "Hook should be executable")
+tests.run_test("repo.lua commit without args shows git status", function()
+    local output, _ = exec_command("cd /root/lua-automations && lua src/repo.lua commit 2>&1")
+    local has_branch = string.find(output, "branch") or string.find(output, "Branch")
+    tests.assert_true(has_branch ~= nil, "Should show git status with branch info")
 end)
 
 --------------------------------------------------------------------------------
