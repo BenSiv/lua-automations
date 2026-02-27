@@ -17,22 +17,22 @@ print(string.rep("=", 60))
 print("\n[SUITE] Basic Directory Listing")
 
 tests.run_test("readdir.lua lists current directory", function()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/readdir.lua 2>&1")
+    local output, _ = exec_command("lua src/readdir.lua 2>&1")
     tests.assert_not_nil(output, "Should return output")
     -- Should list src directory
     tests.assert_contains(output, "src", "Should list src directory")
 end)
 
 tests.run_test("readdir.lua lists specified directory", function()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/readdir.lua tests 2>&1")
+    local output, _ = exec_command("lua src/readdir.lua tst 2>&1")
     tests.assert_not_nil(output, "Should return output")
     -- Should list test files
     tests.assert_contains(output, "test", "Should list test files")
 end)
 
 tests.run_test("readdir.lua handles file argument", function()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/readdir.lua repo.lua 2>&1")
-    tests.assert_contains(output, "repo.lua", "Should print filename")
+    local output, _ = exec_command("lua src/readdir.lua README.md 2>&1")
+    tests.assert_contains(output, "README.md", "Should print filename")
 end)
 
 --------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ end)
 print("\n[SUITE] Edge Cases")
 
 tests.run_test("readdir.lua handles non-existent path", function()
-    local output, _ = exec_command("cd /root/lua-automations && lua src/readdir.lua /nonexistent 2>&1")
+    local output, _ = exec_command("lua src/readdir.lua /nonexistent 2>&1")
     tests.assert_contains(output, "Error", "Should show error for non-existent path")
 end)
 
