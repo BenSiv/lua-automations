@@ -25,6 +25,15 @@ local function trim(s)
     return (s:gsub("^%s+", ""):gsub("%s+$", ""))
 end
 
+local function ensure_git_repo()
+    local output, success = exec_command("git rev-parse --is-inside-work-tree 2>/dev/null")
+    if success and trim(output) == "true" then
+        return true
+    end
+    print("Error: Not inside a git repository. Run this command from a repository directory.")
+    return false
+end
+
 local function parse_options(argv, start_index, spec)
     local opts = { _unknown = {} }
     local i = start_index
@@ -538,6 +547,9 @@ local function main(argv)
             print_behind_usage()
             return
         end
+        if not ensure_git_repo() then
+            return
+        end
         if sub == "list" then
             if #opts._unknown > 0 then
                 print("Unknown args: " .. table.concat(opts._unknown, ", "))
@@ -558,6 +570,9 @@ local function main(argv)
     end
 
     if cmd == "sync" then
+        if not ensure_git_repo() then
+            return
+        end
         git_sync()
         return
     end
@@ -579,6 +594,9 @@ local function main(argv)
         end
         if opts.help then
             print("Usage: repo commit -m <message> [-f <path>]")
+            return
+        end
+        if not ensure_git_repo() then
             return
         end
         if #opts._unknown > 0 then
