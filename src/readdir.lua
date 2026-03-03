@@ -50,7 +50,7 @@ local function main()
     else
         local content = get_content(path)
         if not content then
-            color("Error: could not read content of " .. directory, "red")
+            color("Error: could not read content of " .. path, "red")
         else
 
         	-- print hidden directories

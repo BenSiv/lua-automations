@@ -13,6 +13,10 @@ local function main(arg)
 	local expected_args = def_args(arg_string)
 	local args = parse_args(arg, expected_args)
 
+	if not args then
+		return
+	end
+
 	local print_unique = ""
 	if args["unique"]  then
 		print_unique =  "--files-with-matches"
